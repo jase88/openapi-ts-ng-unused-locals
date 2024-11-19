@@ -1,0 +1,49 @@
+openapi: 3.0.3
+info:
+  title: "Title"
+  version: "1.0"
+
+paths:
+  /api:
+    get:
+      responses:
+        200:
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BarDto"
+
+components:
+  schemas:
+    FooDto:
+      type: object
+      properties:
+        name:
+          type: string
+        telephone:
+          type: string
+        email:
+          type: string
+      required:
+        - name
+
+    BarDto:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/SomethingDto"
+      discriminator:
+        propertyName: type
+        mapping:
+          something: "#/components/schemas/SomethingDto"
+
+    SomethingDto:
+      type: object
+      properties:
+        type:
+          type: string
+        authority:
+          $ref: "#/components/schemas/FooDto"
+      required:
+        - type
+        - authority
